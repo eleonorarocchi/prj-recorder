@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: prj-recorder
+    runtime: node
+    plan: starter
+    buildCommand: npm ci && npm run build
+    startCommand: npm run db:migrate && node build/index.js
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_PATH
+        value: /var/data/recorder.sqlite
+      - key: PERSISTENT_DISK_MOUNT_PATH
+        value: /var/data
+      - key: NODE_VERSION
+        value: 24.21.0
+    disk:
+      name: recorder-data
+      mountPath: /var/data
+      sizeGB: 1
